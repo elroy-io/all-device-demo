@@ -1,22 +1,36 @@
-var PhotosensorDriver = module.exports = function() {
+var PhotosensorDriver = module.exports = function(info,xbeeAPI) {
   this.type = 'photosensor';
-  this.name = 'joes-office-photosensor';
-  this.data = {};
-  this.state = 'on';
-  this.value = 0;
+  this.name = 'xbee-photosensor-'+info.remote16;
+  this.data = {
+    remote16 : info.remote16,
+    remote64 : info.remote64
+  };
+  this.value = NaN;
+  this.xbeeAPI = xbeeAPI;
+
+  this.state = 'ready';
 };
 
 PhotosensorDriver.prototype.init = function(config) {
   config
-    .stream('value', this.onValue);
+    .stream(this.name+'/value', this.onValue);
 };
 
 PhotosensorDriver.prototype.onValue = function(emitter) {
-  setInterval(function() {
-    emitter.emit('data', Math.floor(Math.random() * 100));
-  }, 32);
+  var self = this;
+  this.xbeeAPI.on('frame_object',function(frame){
+    
+    if(frame.remote64 !== self.data.remote64)
+      return;
+    
+    if(frame.type !== 146)
+      return;
+    
+    self.value = frame.analogSamples.AD0;
+    self.emit('update',self.value);
 
-  /*this.board.on('digitalChange', function(e) {
-    emitter.emit('data', e.value);
-  });*/
+    
+
+    emitter.emit('data', self.value);
+  });
 };

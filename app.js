@@ -1,41 +1,25 @@
-var Scientist = require('../../scientist');
-var Nightlight = require('./nightlight');
+var intelliChiliBlink = require('./lib/intellichili-blink.js')
+  , photosensorHue = require('./lib/photosensor-hue.js')
+  , intelliChiliPebble = require('./lib/intellichili-pebble.js');
 
 var HelloApp = module.exports = function() {
   this.name = 'hello';
 };
 
 HelloApp.prototype.init = function(elroy) {
-  elroy.get('joes-office-photosensor', function(err, photosensor) {
-    elroy.get('joes-office-led', function(err, led) {
-      photosensor.on('change', function(value) {
-        if (value < 100) {
-          led.call('turn-on');
-        } else {
-          led.call('turn-off');
-        }
-      });
 
-      elroy.expose(led);
-      elroy.expose(photosensor);
-    });
+  // expose everything to the browser
+  elroy.on('deviceready',function(device){
+    elroy.expose(device);
   });
+  
+  // setup hue notification for intellichili
+  intelliChiliBlink(elroy);
 
-  /*elroy.get('joes-office-photosensor')
-    .zip(elroy.get('joes-office-led'))
-    .subscribe(function(devices) {
-      var photosensor = devices[0];
-      var led = devices[1];
+  // setup nightlight between all photosensors and hubhub
+  photosensorHue(elroy);
 
-      photosensor.on('change', function(value) {
-        if (value < 100) {
-          led.call('turn-on');
-        } else {
-          led.call('turn-off');
-        }
-      });
+  // pebble notifications for intelli chili
+  intelliChiliPebble(elroy);
 
-      elroy.expose(led);
-      elroy.expose(photosensor);
-    });*/
 };
