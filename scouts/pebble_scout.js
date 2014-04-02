@@ -13,11 +13,11 @@ var PebbleScout = module.exports = function() {
 util.inherits(PebbleScout, EventEmitter);
 
 PebbleScout.prototype.init = function(next) {
+  var self = this;
   serialPort.list(function (err, ports) {
     ports.forEach(function(port) {
-
-      if(port.comName.search('tty.Pebble') !== -1){
-	var self = this;
+      
+      if(port.comName.search('Pebble') !== -1){
 	var pebble = new Pebble(port.comName);
 	pebble.on('open', function() {
 	  self.emit('discover', PebbleDriver, pebble);
