@@ -20,6 +20,6 @@
     "xbee-api": "AdamMagaluk/xbee-api",
     "elroy": "0.0.14",
     "median": "0.0.2",
-    "node-pebble": "0.0.1"
+    "node-pebble": "0.0.2-dev"
   }
 }
