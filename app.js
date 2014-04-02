@@ -1,6 +1,7 @@
-var intelliChiliBlink = require('./lib/intellichili-blink.js')
-  , photosensorHue = require('./lib/photosensor-hue.js')
-  , intelliChiliPebble = require('./lib/intellichili-pebble.js');
+var intelliChiliBlink = require('./lib/intellichili-blink')
+  , photosensorHue = require('./lib/photosensor-hue')
+  , intelliChiliPebble = require('./lib/intellichili-pebble')
+  , photosensorDisplay = require('./lib/photosensor-display')
 
 var HelloApp = module.exports = function() {
   this.name = 'hello';
@@ -21,5 +22,8 @@ HelloApp.prototype.init = function(elroy) {
 
   // pebble notifications for intelli chili
   intelliChiliPebble(elroy);
-
+  
+  // display values on photosensor
+  photosensorDisplay(elroy);
+  
 };

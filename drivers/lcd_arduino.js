@@ -31,7 +31,8 @@ LCDDriver.prototype.updateFirmware = function(hexFile,cb){
   });
 
   p.flash(function(err,output){
-    cb(err,output);
+    console.log(output)
+    cb(err);
   });
 };
 
@@ -60,8 +61,7 @@ LCDDriver.prototype.updateValB = function(val,cb){
     return cb();
 
   this._requesting = true;
-  
-  console.log('requesting ',this.data.valA,this.data.valB); 
+
   request('http://'+this.data.addr+'/arduino/update/'+this.data.valA+'/'+this.data.valB,function(err){
     self._requesting = false;
     return cb(err);
