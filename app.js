@@ -8,25 +8,25 @@ var HelloApp = module.exports = function() {
   this.name = 'hello';
 };
 
-HelloApp.prototype.init = function(elroy) {
+HelloApp.prototype.init = function(zetta) {
 
   // expose everything to the browser
-  elroy.on('deviceready',function(device){
-    elroy.expose(device);
+  zetta.on('deviceready',function(device){
+    zetta.expose(device);
   });
   
   // setup hue notification for intellichili
-  intelliChiliBlink(elroy);
+  intelliChiliBlink(zetta);
 
   // setup nightlight between all photosensors and hubhub
-  photosensorHue(elroy);
+  photosensorHue(zetta);
 
   // pebble notifications for intelli chili
-  intelliChiliPebble(elroy);
+  intelliChiliPebble(zetta);
   
   // display values on photosensor
-  photosensorDisplay(elroy);
+  photosensorDisplay(zetta);
 
-  pebbleHue(elroy);
+  pebbleHue(zetta);
   
 };
